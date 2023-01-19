@@ -11,7 +11,7 @@ const pool = new Pool({
 });
 
 // the following assumes that you named your connection variable `pool`
-// pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
+//pool.query(`SELECT title FROM properties LIMIT 10;`).then(response => {console.log(response)})
 
 
 /// Users
@@ -106,12 +106,12 @@ exports.getAllReservations = getAllReservations;
  */
 const getAllProperties = function(options, limit = 10) {
   //console.log(limit);
-  const queryParams = [];
-  const queryString = `SELECT properties.*, avg(property_reviews.rating) as average_rating
+  let queryParams = [];
+  let queryString = `SELECT properties.*, avg(property_reviews.rating) as average_rating
   FROM properties
   JOIN property_reviews ON properties.id = property_id
   `;
-  const priceConverter = (dollars) => {dollars * 100};
+  const priceConverter = (dollars) => {return dollars * 100};
   const queryCheck = (param) => {if (param.length < 1) {return `WHERE`} {return `AND`}};
 
   if (options.city) {
