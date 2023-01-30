@@ -41,11 +41,31 @@
   * `apiRoutes.js` and `userRoutes.js` are responsible for any HTTP requests to `/users/something` or `/api/something`. 
   * `json` is a directory that contains a bunch of dummy data in `.json` files.
   * `database.js` is responsible for all queries to the database. It doesn't currently connect to any database, all it does is return data from `.json` files.
-* Install all required dependencies using `npm install`.
+
 * Use `npm run local` to start server.
 * Run the schema and seed files provided to create tables and fake data.
 * Use PSQL command `\dt` to view all tables used for the project.
 
 Project used to practice connecting an app to a database, and create safe queries,changing queries based on user picked filters. 
+
+## Dependencies
+
+* Install all required dependencies using `npm install`.
+* bcrypt: ^3.0.6
+* body-parser: ^1.19.0
+* cookie-session: ^1.3.3
+* express: ^4.17.1
+* nodemon": ^1.19.1
+* pg: ^8.8.0
+
+## How to Use 
+
+* After installing dependencies, start local server with `npm run local`.
+* Server is hosted on port 3000 , visit `http://localhost:3000/`.
+* Create the database, then use migrations/01_schema.sql to build tables
+* Populate tables with seeds/02_seeds.sql
+* Log in with credentials used to seed table, filter different types of listings based on your preferences.
+
+
 
 
