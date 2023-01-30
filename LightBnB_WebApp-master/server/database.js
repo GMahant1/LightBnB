@@ -22,7 +22,9 @@ const pool = new Pool({
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithEmail = (email) => {
+
   const queryString = `SELECT * FROM users WHERE users.email = $1`;
+
   return pool
     .query(queryString, [email])
     .then((result) => {
@@ -44,11 +46,13 @@ exports.getUserWithEmail = getUserWithEmail;
  * @return {Promise<{}>} A promise to the user.
  */
 const getUserWithId = (id) => {
-  const queryString = `SELECT * FROM users WHERE id = $1`;
+
+  const queryString = `SELECT * FROM users WHERE users.id = $1`;
+
   return pool 
     .query(queryString, [id])
     .then((result) => {
-      return result.rows;
+      return result.rows[0];
     })
     .catch((err) => {
       console.log(err.message);
@@ -63,12 +67,14 @@ exports.getUserWithId = getUserWithId;
  * @return {Promise<{}>} A promise to the user.
  */
 const addUser = (user) => {
-  const queryString = `INSERT INTO users(name, email, password)
-  VALUES($1, $2, $3);`
+
+  const queryString = `INSERT INTO users (name, email, password)
+  VALUES($1, $2, $3) RETURNING *;`
+
   return pool
     .query(queryString, [user.name, user.email, user.password])
     .then((result) => {
-      return result.rows;
+      return result.rows[0];
     })
     .catch((err) => {
       console.log(err.message)
@@ -84,7 +90,13 @@ exports.addUser = addUser;
  * @return {Promise<[{}]>} A promise to the reservations.
  */
 const getAllReservations = function(guest_id, limit = 10) {
-  const queryString = `SELECT reservations.*, properties.* FROM reservations JOIN properties ON properties.id = reservations.property_id WHERE guest_id = $1 LIMIT $2;`;
+
+  const queryString = `SELECT reservations.*, properties.*
+  FROM reservations
+  JOIN properties ON properties.id = reservations.property_id
+  WHERE guest_id = $1
+  LIMIT $2;`;
+
   return pool
     .query(queryString, [guest_id, limit])
     .then((result) => {
@@ -105,9 +117,9 @@ exports.getAllReservations = getAllReservations;
  * @return {Promise<[{}]>}  A promise to the properties.
  */
 const getAllProperties = function(options, limit = 10) {
-  //console.log(limit);
+  
   let queryParams = [];
-  let queryString = `SELECT properties.*, avg(property_reviews.rating) as average_rating
+  let queryString = `SELECT properties.*, AVG(property_reviews.rating) as average_rating
   FROM properties
   JOIN property_reviews ON properties.id = property_id
   `;
