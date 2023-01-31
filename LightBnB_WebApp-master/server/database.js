@@ -28,7 +28,7 @@ const getUserWithEmail = (email) => {
   return pool
     .query(queryString, [email])
     .then((result) => {
-      //console.log(result);
+      
       if (result.rows === []) {
         return null;
       }
@@ -127,6 +127,8 @@ const getAllProperties = function(options, limit = 10) {
   `;
   const priceConverter = (dollars) => {return dollars * 100};
   const queryCheck = (param) => {if (param.length < 1) {return `WHERE`} {return `AND`}};
+
+  //query modification based on user search criteria
 
   if (options.city) {
     queryParams.push(`%${options.city}%`);
